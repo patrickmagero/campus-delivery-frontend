@@ -1,13 +1,15 @@
 const Navbar = () => {
   return (
     <nav className="navbar">
-      <div className="logo">CampusDelivery</div>
-      <ul className="nav-links">
-        <li><a href="#">Home</a></li>
-        <li><a href="#">Vendors</a></li>
-        <li><a href="#">Track</a></li>
-        <li><a href="#">Login</a></li>
-      </ul>
+      <div className="navbar-container">
+        <div className="logo">CampusDelivery</div>
+        <ul className="nav-menu">
+          <li><a href="#">Home</a></li>
+          <li><a href="#">Vendors</a></li>
+          <li><a href="#">Track</a></li>
+          <li><a href="#" className="login-button">Login</a></li>
+        </ul>
+      </div>
     </nav>
   );
 };
