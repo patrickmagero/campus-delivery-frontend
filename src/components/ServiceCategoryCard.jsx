@@ -1,10 +1,10 @@
 import { Link } from 'react-router-dom';
 
-export default function ProductCategoryCard({ title, items = [], buttonLink = '/products' }) {
+export default function ServiceCategoryCard({ title, items = [], link = "/services" }) {
   return (
     <Link
-      to={buttonLink}
-      className="bg-white rounded-xl shadow-sm p-4 flex flex-col justify-between min-h-[300px] hover:shadow-md transition-all duration-300 group"
+      to={link}
+      className="bg-white rounded-xl shadow-sm p-4 flex-shrink-0 w-64 mr-4 flex flex-col justify-between hover:shadow-md transition-all duration-300 group"
     >
       <h3 className="text-lg font-semibold mb-4 group-hover:text-yellow-600 transition-colors duration-200">
         {title}
@@ -23,8 +23,8 @@ export default function ProductCategoryCard({ title, items = [], buttonLink = '/
         ))}
       </div>
 
-      <span className="bg-yellow-500 hover:bg-yellow-600 text-white py-2 px-4 rounded-md w-full text-center transition-colors duration-200">
-        View All Products
+      <span className="bg-blue-600 hover:bg-blue-700 text-white py-2 px-4 rounded-md text-center">
+        Explore Services
       </span>
     </Link>
   );

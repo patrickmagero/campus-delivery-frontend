@@ -1,24 +1,21 @@
-// src/components/FaqSection.jsx
 import { useState } from 'react';
 import { motion } from 'framer-motion';
 import { FiPlus, FiMinus } from 'react-icons/fi';
 import { FaRegQuestionCircle } from 'react-icons/fa';
+import { Link } from 'react-router-dom';
 
 const faqs = [
   {
-    question: 'How will my return to work be handled?',
-    answer:
-      'Lorem ipsum dolor sit amet consectetur. Ac risus commodo nec iaculis neque viverra in malesuada.',
+    question: 'How do I place an order?',
+    answer: 'You can place an order directly through our website or mobile app. Simply browse, select, and checkout.',
   },
   {
-    question: 'How will my return to work be handled?',
-    answer:
-      'Lorem ipsum dolor sit amet consectetur. Ac risus commodo nec iaculis neque viverra in malesuada.',
+    question: 'Can I cancel or change my order?',
+    answer: 'Yes, orders can be modified within 15 minutes after placing them. Visit your orders page to manage it.',
   },
   {
-    question: 'How will my return to work be handled?',
-    answer:
-      'Lorem ipsum dolor sit amet consectetur. Ac risus commodo nec iaculis neque viverra in malesuada.',
+    question: 'What payment methods do you accept?',
+    answer: 'We accept MPesa, credit/debit cards, and campus wallet credits.',
   },
 ];
 
@@ -34,7 +31,7 @@ export default function FaqSection() {
       <div className="max-w-7xl mx-auto">
         <h2 className="text-2xl font-bold text-center mb-10">FAQs</h2>
         <p className="text-center text-xl font-semibold mb-10">
-          Question? <span className="text-yellow-600">Look here</span>
+          Questions? <span className="text-yellow-600">Look here</span>
         </p>
 
         <div className="grid md:grid-cols-3 gap-6">
@@ -78,9 +75,12 @@ export default function FaqSection() {
             <p className="text-sm text-gray-600 mb-4">
               Reach out to us directly. We’re here to answer any questions.
             </p>
-            <button className="bg-yellow-500 hover:bg-yellow-600 text-white py-2 px-4 rounded-md">
+            <Link
+              to="/contact"
+              className="bg-yellow-500 hover:bg-yellow-600 text-white py-2 px-4 rounded-md"
+            >
               Contact Us
-            </button>
+            </Link>
           </motion.div>
         </div>
       </div>

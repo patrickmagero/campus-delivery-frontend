@@ -1,19 +1,21 @@
+import { Link } from 'react-router-dom';
+
 export default function Marketplace() {
   const cards = [
     {
       title: 'Fresh and Local',
       image: '/assets/freshandlocal.jpg',
-      href: '#', // Replace with actual link later
+      link: '/products', // Use actual route when ready
     },
     {
       title: 'Explore Services',
       image: '/assets/exploreservices.jpg',
-      href: '#',
+      link: '/services',
     },
     {
       title: 'Wholesale Hub',
       image: '/assets/wholesalehub.jpg',
-      href: '#',
+      link: '/products',
     },
   ];
 
@@ -24,9 +26,9 @@ export default function Marketplace() {
 
         <div className="grid grid-cols-1 md:grid-cols-3 gap-6">
           {cards.map((card, index) => (
-            <a
+            <Link
               key={index}
-              href={card.href}
+              to={card.link}
               className="relative h-64 rounded-xl overflow-hidden shadow-md group block"
             >
               <img
@@ -38,7 +40,7 @@ export default function Marketplace() {
                 <h3 className="text-xl font-semibold mb-2">{card.title}</h3>
                 <p className="underline text-sm">Learn more</p>
               </div>
-            </a>
+            </Link>
           ))}
         </div>
       </div>

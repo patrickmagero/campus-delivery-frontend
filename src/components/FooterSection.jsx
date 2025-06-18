@@ -1,5 +1,6 @@
 // src/components/FooterSection.jsx
 import { motion } from 'framer-motion';
+import { Link } from 'react-router-dom';
 import { FaFacebook, FaTwitter, FaInstagram, FaLinkedin } from 'react-icons/fa';
 
 export default function FooterSection() {
@@ -32,40 +33,40 @@ export default function FooterSection() {
           <div>
             <h4 className="font-semibold mb-3">Products</h4>
             <ul className="space-y-2">
-              <li>Home</li>
-              <li>Projects</li>
-              <li>Clients List</li>
-              <li>About Us</li>
-              <li>Blog</li>
+              <li><Link to="/">Home</Link></li>
+              <li><Link to="/products">Products</Link></li>
+              <li><Link to="/clients">Clients List</Link></li>
+              <li><Link to="/about">About Us</Link></li>
+              <li><Link to="/blog">Blog</Link></li>
             </ul>
           </div>
           <div>
             <h4 className="font-semibold mb-3">Services</h4>
             <ul className="space-y-2">
-              <li>Outdoor Living</li>
-              <li>Pool</li>
-              <li>Landscaping</li>
-              <li>Patios</li>
-              <li>Outdoor Kitchens</li>
+              <li><Link to="/services/outdoor-living">Outdoor Living</Link></li>
+              <li><Link to="/services/pool">Pool</Link></li>
+              <li><Link to="/services/landscaping">Landscaping</Link></li>
+              <li><Link to="/services/patios">Patios</Link></li>
+              <li><Link to="/services/kitchens">Outdoor Kitchens</Link></li>
             </ul>
           </div>
           <div>
             <h4 className="font-semibold mb-3">About Us</h4>
             <ul className="space-y-2">
-              <li>Home</li>
-              <li>Projects</li>
-              <li>Clients List</li>
-              <li>About Us</li>
-              <li>Blog</li>
+              <li><Link to="/">Home</Link></li>
+              <li><Link to="/projects">Projects</Link></li>
+              <li><Link to="/clients">Clients List</Link></li>
+              <li><Link to="/about">About</Link></li>
+              <li><Link to="/blog">Blog</Link></li>
             </ul>
           </div>
           <div>
             <h4 className="font-semibold mb-3">Resources</h4>
             <ul className="space-y-2">
-              <li>Contact Us</li>
-              <li>Terms</li>
-              <li>Policy</li>
-              <li>Payments</li>
+              <li><Link to="/contact">Contact Us</Link></li>
+              <li><Link to="/terms">Terms</Link></li>
+              <li><Link to="/policy">Policy</Link></li>
+              <li><Link to="/payments">Payments</Link></li>
             </ul>
           </div>
           <div className="flex flex-col justify-between space-y-4">
@@ -87,9 +88,9 @@ export default function FooterSection() {
         <div className="border-t border-gray-700 mt-10 pt-6 text-sm flex flex-col md:flex-row justify-between items-center gap-4">
           <p>© 2023 uhubs.com. All rights reserved.</p>
           <div className="flex gap-4">
-            <span>Privacy Policy</span>
-            <span>Terms & Conditions</span>
-            <span>Cookie</span>
+            <Link to="/privacy-policy">Privacy Policy</Link>
+            <Link to="/terms-and-conditions">Terms & Conditions</Link>
+            <Link to="/cookie">Cookie</Link>
           </div>
         </div>
       </div>

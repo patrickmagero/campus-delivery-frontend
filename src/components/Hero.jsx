@@ -1,4 +1,5 @@
 // src/components/Hero.jsx
+import { Link } from 'react-router-dom';
 
 export default function Hero() {
   return (
@@ -12,9 +13,12 @@ export default function Hero() {
           <p className="text-lg text-gray-600 mb-8">
             Shop with us for the freshest produce and unbeatable prices.
           </p>
-          <button className="bg-blue-600 text-white px-6 py-3 rounded-md text-lg hover:bg-blue-700 transition">
+          <Link
+            to="/products"
+            className="inline-block bg-blue-600 text-white px-6 py-3 rounded-md text-lg hover:bg-blue-700 transition"
+          >
             Shop now
-          </button>
+          </Link>
         </div>
 
         {/* Right Image */}
