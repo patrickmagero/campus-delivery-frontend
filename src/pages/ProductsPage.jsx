@@ -5,11 +5,16 @@ import FilterSidebar from "../components/FilterSidebar";
 import ProductCard from "../components/ProductCard";
 import LoadingSkeleton from "../components/LoadingSkeleton";
 import EmptyProductGrid from "../components/EmptyProductGrid";
+import { filterItems } from "../utils/filterItems"; // ✅ shared filtering logic
 
 export default function ProductsPage() {
   const [products, setProducts] = useState([]);
   const [loading, setLoading] = useState(true);
-  const [selectedCategory, setSelectedCategory] = useState(null);
+
+  // Filters
+  const [selectedFilters, setSelectedFilters] = useState({});
+  const [priceRange, setPriceRange] = useState([500, 10000]);
+  const [selectedRating, setSelectedRating] = useState(null);
 
   useEffect(() => {
     setLoading(true);
@@ -27,20 +32,27 @@ export default function ProductsPage() {
       })
       .catch((err) => {
         console.error("Error fetching products:", err);
-        setProducts([]); // fallback
+        setProducts([]);
       })
       .finally(() => setLoading(false));
   }, []);
 
-  const filteredProducts = selectedCategory
-    ? products.filter((product) => product.category === selectedCategory)
-    : products;
+  const filteredProducts = filterItems(
+    products,
+    selectedFilters,
+    priceRange,
+    selectedRating
+  );
 
   return (
     <div className="flex px-6 py-4 gap-4">
       <FilterSidebar
-        selectedCategory={selectedCategory}
-        setSelectedCategory={setSelectedCategory}
+        selectedFilters={selectedFilters}
+        setSelectedFilters={setSelectedFilters}
+        priceRange={priceRange}
+        setPriceRange={setPriceRange}
+        selectedRating={selectedRating}
+        setSelectedRating={setSelectedRating}
       />
 
       <div className="grid grid-cols-3 gap-4 flex-1">
