@@ -1,5 +1,15 @@
 // components/ProductInfo.jsx
+
 export default function ProductInfo({ product }) {
+  // Extract unique colors and sizes from product variants
+  const availableColors = [
+    ...new Set(product.variants?.map((v) => v.color).filter(Boolean)),
+  ];
+
+  const availableSizes = [
+    ...new Set(product.variants?.map((v) => v.size).filter(Boolean)),
+  ];
+
   return (
     <div className="flex-1 space-y-4">
       <p className="text-sm text-gray-500 uppercase">{product.category}</p>
@@ -19,29 +29,34 @@ export default function ProductInfo({ product }) {
       <p className="text-gray-600">{product.description}</p>
 
       {/* Color options */}
-      <div className="flex items-center gap-2">
-        {product.available_colors?.map((color, idx) => (
-          <div
-            key={idx}
-            className="w-6 h-6 rounded-full border"
-            style={{ backgroundColor: color }}
-          ></div>
-        ))}
-      </div>
+      {availableColors.length > 0 && (
+        <div className="flex items-center gap-2">
+          {availableColors.map((color, idx) => (
+            <div
+              key={idx}
+              className="w-6 h-6 rounded-full border"
+              style={{ backgroundColor: color }}
+              title={color}
+            ></div>
+          ))}
+        </div>
+      )}
 
       {/* Size options */}
-      <div className="flex gap-2">
-        {product.available_sizes?.map((size, idx) => (
-          <span
-            key={idx}
-            className="border px-2 py-1 rounded text-sm text-gray-700"
-          >
-            {size}
-          </span>
-        ))}
-      </div>
+      {availableSizes.length > 0 && (
+        <div className="flex gap-2">
+          {availableSizes.map((size, idx) => (
+            <span
+              key={idx}
+              className="border px-2 py-1 rounded text-sm text-gray-700"
+            >
+              {size}
+            </span>
+          ))}
+        </div>
+      )}
 
-      {/* Quantity selector */}
+      {/* Quantity selector (static for now) */}
       <div className="flex items-center gap-4">
         <span className="text-sm text-gray-600">Quantity:</span>
         <div className="flex items-center border rounded overflow-hidden">
@@ -60,7 +75,7 @@ export default function ProductInfo({ product }) {
       </div>
 
       {/* Tags */}
-      {product.tags && (
+      {product.tags && product.tags.length > 0 && (
         <div className="text-sm text-gray-500">
           Tags: {product.tags.join(", ")}
         </div>

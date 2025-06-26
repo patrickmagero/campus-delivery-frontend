@@ -38,13 +38,13 @@ export default function SingleProductPage() {
       <Breadcrumb productName={product.name} />
 
       <div className="flex flex-col lg:flex-row gap-8">
-        <ProductImageGallery images={product.image_urls} />
+        <ProductImageGallery images={product.images} />
         <ProductInfo product={product} />
         <DeliverySidebar productId={product.id} />
       </div>
 
       <TabsSection product={product} />
-      <RelatedProducts productId={product.id} />
+      <RelatedProducts products={product.related_products} />
     </div>
   );
 }

@@ -1,18 +1,23 @@
-export function filterItems(items, filters, priceRange, rating) {
+export function filterItems(items, filters, priceRange, selectedRating) {
   return items.filter((item) => {
-    const { category, price, rating: itemRating } = item;
+    const price = parseFloat(item.price); // Ensure numeric comparison
 
-    const categoryMatch = Object.entries(filters).some(([group, list]) =>
-      list.includes(category)
-    );
+    // 🟡 CATEGORY FILTER
+    const selectedCategories = filters.category || [];
+    const matchesCategory =
+      selectedCategories.length === 0 ||
+      selectedCategories.includes(item.category);
 
-    const priceMatch =
-      typeof price === "number" &&
-      price >= priceRange[0] &&
-      price <= priceRange[1];
+    // 🟡 PRICE FILTER
+    const matchesPrice =
+      price >= priceRange[0] && price <= priceRange[1];
 
-    const ratingMatch = rating ? itemRating >= rating : true;
+    // 🟡 RATING FILTER
+    const matchesRating =
+      selectedRating === null ||
+      Math.floor(item.rating) === selectedRating;
 
-    return categoryMatch && priceMatch && ratingMatch;
+    // ✅ Final condition
+    return matchesCategory && matchesPrice && matchesRating;
   });
 }

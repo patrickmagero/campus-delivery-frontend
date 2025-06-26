@@ -1,4 +1,3 @@
-// components/TabsSection.jsx
 import { useState } from "react";
 
 export default function TabsSection({ product }) {
@@ -44,8 +43,28 @@ export default function TabsSection({ product }) {
 
         {activeTab === "reviews" && (
           <div>
-            <p className="text-sm text-gray-500">This product has {product.review_count || 0} reviews.</p>
-            <div className="mt-2 italic text-gray-400">Reviews loading soon...</div>
+            <p className="text-sm text-gray-500 mb-4">
+              {product.review_count || 0} reviews
+            </p>
+
+            {product.reviews && product.reviews.length > 0 ? (
+              <div className="space-y-4">
+                {product.reviews.map((review, index) => (
+                  <div key={index} className="border rounded p-4">
+                    <div className="flex justify-between">
+                      <p className="font-semibold">{review.user_name}</p>
+                      <p className="text-yellow-500">{review.rating} ★</p>
+                    </div>
+                    <p className="text-gray-600 mt-1">{review.comment}</p>
+                    <p className="text-xs text-gray-400 mt-2">
+                      {new Date(review.created_at).toLocaleDateString()}
+                    </p>
+                  </div>
+                ))}
+              </div>
+            ) : (
+              <div className="text-gray-400 italic">No reviews yet.</div>
+            )}
           </div>
         )}
       </div>

@@ -32,15 +32,15 @@ export default function FilterSidebar({
     ],
   };
 
-  const toggleFilter = (group, item) => {
-    const current = selectedFilters[group] || [];
-    const updatedGroup = current.includes(item)
+  const toggleFilter = (item) => {
+    const current = selectedFilters.category || [];
+    const updated = current.includes(item)
       ? current.filter((i) => i !== item)
       : [...current, item];
 
     setSelectedFilters({
       ...selectedFilters,
-      [group]: updatedGroup,
+      category: updated,
     });
   };
 
@@ -59,8 +59,8 @@ export default function FilterSidebar({
                   <input
                     type="checkbox"
                     className="accent-blue-600"
-                    checked={selectedFilters[group]?.includes(item) || false}
-                    onChange={() => toggleFilter(group, item)}
+                    checked={selectedFilters.category?.includes(item) || false}
+                    onChange={() => toggleFilter(item)}
                   />
                   {item}
                 </label>

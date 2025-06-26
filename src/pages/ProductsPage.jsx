@@ -12,7 +12,9 @@ export default function ProductsPage() {
   const [loading, setLoading] = useState(true);
 
   // Filters
-  const [selectedFilters, setSelectedFilters] = useState({});
+  const [selectedFilters, setSelectedFilters] = useState({
+    category: ["Smartphones"],
+  });
   const [priceRange, setPriceRange] = useState([500, 10000]);
   const [selectedRating, setSelectedRating] = useState(null);
 
@@ -20,8 +22,10 @@ export default function ProductsPage() {
     setLoading(true);
 
     axios
-      .get("/api/products")
+      .get("http://localhost:5000/api/products")
       .then((res) => {
+        console.log("Products from backend:", res.data);
+        console.log("Example product:", res.data[0]); // 👀
         const data = Array.isArray(res.data)
           ? res.data
           : Array.isArray(res.data.products)
@@ -36,13 +40,11 @@ export default function ProductsPage() {
       })
       .finally(() => setLoading(false));
   }, []);
+  console.log("Raw products:", products);
+  const filteredProducts = products;
+  console.log("Filtered products:", filteredProducts);
 
-  const filteredProducts = filterItems(
-    products,
-    selectedFilters,
-    priceRange,
-    selectedRating
-  );
+
 
   return (
     <div className="flex px-6 py-4 gap-4">
