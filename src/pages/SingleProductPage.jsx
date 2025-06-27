@@ -19,9 +19,18 @@ export default function SingleProductPage() {
   useEffect(() => {
     setLoading(true);
     axios
-      .get(`http://localhost:5000/api/products/${id}`) // Adjust to match your backend
+      .get(`http://localhost:5000/api/products/${id}`)
       .then((res) => {
-        setProduct(res.data);
+        const data = res.data;
+
+        // Normalize keys for consistent behavior
+        const normalizedProduct = {
+          ...data,
+          id: data.product_id, // 👈 convert backend field to `id`
+          image: data.images?.[0], // 👈 grab the first image if available
+        };
+
+        setProduct(normalizedProduct);
         setLoading(false);
       })
       .catch((err) => {

@@ -1,7 +1,11 @@
-import { useState } from "react";
+import { useState, useContext } from "react";
+import { useNavigate } from "react-router-dom";
+import { CartContext } from "../context/CartContext";
 
 export default function ProductInfo({ product }) {
   const [quantity, setQuantity] = useState(1);
+  const { addToCart } = useContext(CartContext);
+  const navigate = useNavigate();
 
   const handleIncrease = () => setQuantity((prev) => prev + 1);
   const handleDecrease = () => {
@@ -47,13 +51,16 @@ export default function ProductInfo({ product }) {
       {/* Action buttons */}
       <div className="flex gap-4">
         <button
-          onClick={() => alert(`Added ${quantity} to cart!`)}
+          onClick={() => addToCart(product, quantity)}
           className="bg-blue-600 text-white px-4 py-2 rounded-lg"
         >
           Add to Cart
         </button>
         <button
-          onClick={() => alert(`Buying ${quantity} for Ksh ${totalPrice}`)}
+          onClick={() => {
+            addToCart(product, quantity);
+            navigate("/cart");
+          }}
           className="border px-4 py-2 rounded-lg"
         >
           Buy Now

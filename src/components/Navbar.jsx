@@ -1,8 +1,12 @@
 import { FaBell, FaHeart, FaMapMarkerAlt, FaSearch, FaShoppingCart } from "react-icons/fa";
 import { Link, useLocation } from "react-router-dom";
+import { useContext } from "react";
+import { CartContext } from "../context/CartContext";
 
 export default function Navbar() {
   const location = useLocation();
+  const { cartItems } = useContext(CartContext);
+  const cartCount = cartItems.reduce((sum, item) => sum + item.quantity, 0);
 
   const isActive = (path) => location.pathname.startsWith(path);
 
@@ -32,7 +36,6 @@ export default function Navbar() {
             My logo
           </Link>
 
-          {/* Highlight current section */}
           <div className="flex gap-2 bg-white p-1 rounded-full shadow-inner">
             <Link
               to="/products"
@@ -63,7 +66,14 @@ export default function Navbar() {
           <FaMapMarkerAlt className="cursor-pointer" />
           <FaBell className="cursor-pointer" />
           <FaHeart className="cursor-pointer" />
-          <FaShoppingCart className="cursor-pointer" />
+          <Link to="/cart" className="relative">
+            <FaShoppingCart className="cursor-pointer" />
+            {cartCount > 0 && (
+              <span className="absolute -top-2 -right-2 bg-red-600 text-white text-xs w-5 h-5 flex items-center justify-center rounded-full">
+                {cartCount}
+              </span>
+            )}
+          </Link>
           <button className="bg-blue-600 text-white px-4 py-1.5 rounded-md hover:bg-blue-700">
             Log in
           </button>

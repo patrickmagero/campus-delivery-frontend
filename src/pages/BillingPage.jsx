@@ -1,0 +1,121 @@
+import { useContext, useState } from "react";
+import { CartContext } from "../context/CartContext";
+import { useNavigate } from "react-router-dom";
+
+export default function BillingPage() {
+  const { cartItems } = useContext(CartContext);
+  const navigate = useNavigate();
+
+  const [deliveryMethod, setDeliveryMethod] = useState("delivery");
+  const [deliveryNote, setDeliveryNote] = useState("");
+
+  const subtotal = cartItems.reduce((acc, item) => acc + item.price * item.quantity, 0);
+  const shipping = 100;
+  const discount = 29;
+  const total = subtotal + shipping - discount;
+
+  return (
+    <div className="max-w-6xl mx-auto px-4 py-8 grid grid-cols-1 lg:grid-cols-3 gap-6">
+      
+      {/* LEFT COLUMN */}
+      <div className="lg:col-span-2 space-y-6">
+        {/* Tabs */}
+        <div className="flex gap-4">
+          <button
+            className={`flex-1 py-2 border rounded-t-lg ${
+              deliveryMethod === "delivery"
+                ? "bg-white border-b-4 border-yellow-400 font-semibold"
+                : "bg-gray-100"
+            }`}
+            onClick={() => setDeliveryMethod("delivery")}
+          >
+            Delivery <span className="text-sm block text-gray-500">Ready within 2hrs</span>
+          </button>
+          <button
+            className={`flex-1 py-2 border rounded-t-lg ${
+              deliveryMethod === "pickup"
+                ? "bg-white border-b-4 border-yellow-400 font-semibold"
+                : "bg-gray-100"
+            }`}
+            onClick={() => setDeliveryMethod("pickup")}
+          >
+            Pick at a store <span className="text-sm block text-gray-500">Within an hour</span>
+          </button>
+        </div>
+
+        {/* Delivery Address */}
+        <section className="border rounded-lg overflow-hidden">
+          <div className="bg-yellow-400 px-4 py-2 font-semibold">Delivery Address</div>
+          <div className="p-4 flex justify-between items-center">
+            <p>Nairobi, CBD</p>
+            <button className="text-blue-600 text-sm">Change Address</button>
+          </div>
+        </section>
+
+        {/* Schedule a delivery */}
+        <section className="border rounded-lg overflow-hidden">
+          <div className="bg-yellow-400 px-4 py-2 font-semibold">Schedule a delivery</div>
+          <div className="p-4 space-y-2">
+            <div className="flex justify-between items-center">
+              <p>Saturday 25th June 2025<br />10:00AM - 12:00AM</p>
+              <button className="text-blue-600 text-sm">Change Slot</button>
+            </div>
+            <textarea
+              value={deliveryNote}
+              onChange={(e) => setDeliveryNote(e.target.value)}
+              placeholder="Additional Delivery Information"
+              maxLength={255}
+              className="w-full border rounded px-3 py-2 mt-2"
+            />
+            <p className="text-sm text-right text-gray-400">
+              Remaining Characters: {255 - deliveryNote.length}
+            </p>
+          </div>
+        </section>
+
+        {/* Items Details */}
+        <section className="border rounded-lg overflow-hidden">
+          <div className="bg-yellow-400 px-4 py-2 font-semibold">Items Details</div>
+          <div className="p-4 flex justify-between items-center">
+            <p>{cartItems.map((item) => item.name).join(", ")}</p>
+            <button className="text-blue-600 text-sm">Show Items</button>
+          </div>
+        </section>
+      </div>
+
+      {/* RIGHT COLUMN: ORDER SUMMARY */}
+      <div className="bg-white shadow rounded-lg p-6 h-fit border">
+        <h3 className="text-lg font-bold mb-4">Order Summary</h3>
+        <div className="space-y-2 text-sm text-gray-700">
+          <div className="flex justify-between">
+            <span>Items</span>
+            <span>{cartItems.length}</span>
+          </div>
+          <div className="flex justify-between">
+            <span>Sub Total</span>
+            <span>Ksh {subtotal}</span>
+          </div>
+          <div className="flex justify-between">
+            <span>Shipping</span>
+            <span>Ksh {shipping}</span>
+          </div>
+          <div className="flex justify-between text-green-600">
+            <span>Coupon Discount</span>
+            <span>-Ksh {discount}</span>
+          </div>
+          <hr />
+          <div className="flex justify-between font-bold text-lg">
+            <span>Total</span>
+            <span>Ksh {total}</span>
+          </div>
+        </div>
+        <button
+          onClick={() => navigate("/cart/billing/payment")}
+          className="w-full mt-6 bg-indigo-600 text-white py-2 rounded-lg hover:bg-indigo-700"
+        >
+          Proceed to Payment
+        </button>
+      </div>
+    </div>
+  );
+}

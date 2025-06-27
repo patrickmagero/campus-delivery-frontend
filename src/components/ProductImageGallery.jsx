@@ -1,35 +1,38 @@
-// components/ProductImageGallery.jsx
-export default function ProductImageGallery({ images }) {
-  if (!images || images.length === 0) {
-    return (
-      <div className="w-full max-w-md h-96 bg-gray-200 rounded-lg flex items-center justify-center">
-        <span className="text-gray-500">No image available</span>
-      </div>
-    );
+import { useState } from "react";
+
+export default function ProductImageGallery({ images = [] }) {
+  const [activeImage, setActiveImage] = useState(images[0]);
+
+  if (!images.length) {
+    return <div className="p-4 text-gray-500">No images available.</div>;
   }
 
   return (
-    <div className="w-full max-w-md space-y-4">
-      {/* Main image */}
-      <div className="aspect-square rounded-lg overflow-hidden shadow">
+    <div className="w-full lg:w-1/2 space-y-4">
+      {/* Main Image */}
+      <div className="border rounded-lg overflow-hidden">
         <img
-          src={images[0]}
+          src={activeImage}
           alt="Product"
-          className="w-full h-full object-cover"
+          className="w-full h-80 object-cover transition-all duration-300"
         />
       </div>
 
-      {/* Thumbnails */}
-      <div className="flex gap-2">
-        {images.map((img, idx) => (
-          <img
-            key={idx}
-            src={img}
-            alt={`Thumbnail ${idx + 1}`}
-            className="w-16 h-16 object-cover rounded border hover:scale-105 transition"
-          />
-        ))}
-      </div>
+      {/* Thumbnail Gallery */}
+      {images.length > 1 && (
+        <div className="flex gap-3">
+          {images.map((img, index) => (
+            <img
+              key={index}
+              src={img}
+              alt={`Thumbnail ${index + 1}`}
+              onClick={() => setActiveImage(img)}
+              className={`w-16 h-16 object-cover rounded-lg border cursor-pointer transition 
+                ${img === activeImage ? "ring-2 ring-blue-500" : "hover:opacity-80"}`}
+            />
+          ))}
+        </div>
+      )}
     </div>
   );
 }
