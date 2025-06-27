@@ -44,6 +44,20 @@ export default function FilterSidebar({
     });
   };
 
+  const handleMinPriceChange = (e) => {
+    const newMin = Number(e.target.value);
+    if (newMin <= priceRange[1]) {
+      setPriceRange([newMin, priceRange[1]]);
+    }
+  };
+
+  const handleMaxPriceChange = (e) => {
+    const newMax = Number(e.target.value);
+    if (newMax >= priceRange[0]) {
+      setPriceRange([priceRange[0], newMax]);
+    }
+  };
+
   return (
     <aside className="w-64 bg-white border rounded-md p-4 shadow-sm">
       <h2 className="text-lg font-semibold mb-4">Filter Options</h2>
@@ -73,26 +87,30 @@ export default function FilterSidebar({
       {/* Price Filter */}
       <div className="mb-4">
         <h3 className="font-semibold mb-2">Price</h3>
-        <input
-          type="range"
-          min={500}
-          max={10000}
-          value={priceRange[0]}
-          onChange={(e) =>
-            setPriceRange([Number(e.target.value), priceRange[1]])
-          }
-        />
-        <input
-          type="range"
-          min={500}
-          max={10000}
-          value={priceRange[1]}
-          onChange={(e) =>
-            setPriceRange([priceRange[0], Number(e.target.value)])
-          }
-        />
-        <p className="text-sm text-gray-600">
-          Ksh {priceRange[0]} - {priceRange[1]}
+        <div className="flex flex-col gap-2">
+          <label>
+            Min: Ksh {priceRange[0]}
+            <input
+              type="range"
+              min={0}
+              max={10000}
+              value={priceRange[0]}
+              onChange={handleMinPriceChange}
+            />
+          </label>
+          <label>
+            Max: Ksh {priceRange[1]}
+            <input
+              type="range"
+              min={0}
+              max={10000}
+              value={priceRange[1]}
+              onChange={handleMaxPriceChange}
+            />
+          </label>
+        </div>
+        <p className="text-sm text-gray-600 mt-1">
+          Selected Range: Ksh {priceRange[0]} - {priceRange[1]}
         </p>
       </div>
 

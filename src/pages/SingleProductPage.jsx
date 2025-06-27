@@ -40,7 +40,7 @@ export default function SingleProductPage() {
       <div className="flex flex-col lg:flex-row gap-8">
         <ProductImageGallery images={product.images} />
         <ProductInfo product={product} />
-        <DeliverySidebar productId={product.id} />
+        <DeliverySidebar productId={product.id} product={product} />
       </div>
 
       <TabsSection product={product} />

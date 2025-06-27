@@ -1,40 +1,32 @@
-// components/DeliverySidebar.jsx
-export default function DeliverySidebar({ productId }) {
+export default function DeliverySidebar({ productId, product }) {
   return (
-    <div className="w-full lg:w-1/4 bg-white p-4 rounded-lg border space-y-6">
+    <aside className="w-full lg:w-64 bg-white border rounded p-4 shadow-sm space-y-6">
+      {/* Seller Info */}
+      <div>
+        <h3 className="text-sm font-semibold text-gray-600 mb-2">Seller Information</h3>
+        <div className="text-sm text-gray-700 space-y-1">
+          <p><strong>Name:</strong> {product.seller_name || "N/A"}</p>
+          <p><strong>Rating:</strong> {product.seller_rating ?? "N/A"} ★</p>
+          <p><strong>Followers:</strong> {product.follower_count ?? 0}</p>
+          <p>
+            <strong>Status:</strong>{" "}
+            <span className={`font-medium ${product.is_verified ? "text-green-600" : "text-gray-500"}`}>
+              {product.is_verified ? "Verified Seller" : "Unverified"}
+            </span>
+          </p>
+        </div>
+      </div>
+
       {/* Delivery & Returns */}
       <div>
-        <h2 className="text-lg font-semibold mb-2">Delivery & Returns</h2>
-
-        <div className="text-sm text-gray-600 space-y-2">
-          <div>
-            <span className="font-medium text-gray-700">Location:</span>{" "}
-            Nairobi
-          </div>
-          <div>
-            <span className="font-medium text-gray-700">Delivery Point:</span>{" "}
-            Main Campus Gate
-          </div>
-          <div>
-            <span className="font-medium text-gray-700">Fee:</span> Ksh 50
-          </div>
-          <div>
-            <span className="font-medium text-gray-700">Return Policy:</span>{" "}
-            Within 3 days of delivery
-          </div>
-        </div>
+        <h3 className="text-sm font-semibold text-gray-600 mb-2">Delivery & Returns</h3>
+        <ul className="text-sm text-gray-700 list-disc pl-4 space-y-1">
+          <li>Delivery within campus: <strong>1–2 hours</strong></li>
+          <li>Standard delivery (outside campus): <strong>1–2 days</strong></li>
+          <li>7-day return policy for eligible items</li>
+          <li>Instant refunds to wallet or M-PESA</li>
+        </ul>
       </div>
-
-      {/* Seller Info */}
-      <div className="pt-4 border-t">
-        <h2 className="text-lg font-semibold mb-2">Seller Information</h2>
-        <div className="text-sm text-gray-700">
-          <p className="font-medium">Magero Mobile Store</p>
-          <p>⭐ 4.8 rating</p>
-          <p>1000+ followers</p>
-          <button className="mt-2 text-blue-600 underline">Follow Seller</button>
-        </div>
-      </div>
-    </div>
+    </aside>
   );
 }

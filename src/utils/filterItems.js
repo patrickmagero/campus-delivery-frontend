@@ -1,23 +1,26 @@
-export function filterItems(items, filters, priceRange, selectedRating) {
-  return items.filter((item) => {
-    const price = parseFloat(item.price); // Ensure numeric comparison
+export function filterItems(products, selectedFilters, priceRange, selectedRating) {
+  return products.filter((product) => {
+    const normalizedProductCategory = product.category?.trim().toLowerCase();
+    const selectedCategories = selectedFilters.category || [];
 
-    // 🟡 CATEGORY FILTER
-    const selectedCategories = filters.category || [];
-    const matchesCategory =
+    // ✅ CATEGORY match
+    const categoryMatch =
       selectedCategories.length === 0 ||
-      selectedCategories.includes(item.category);
+      selectedCategories
+        .map((c) => c.trim().toLowerCase())
+        .includes(normalizedProductCategory);
 
-    // 🟡 PRICE FILTER
-    const matchesPrice =
-      price >= priceRange[0] && price <= priceRange[1];
+    // ✅ PRICE match
+    const price = parseFloat(product.price);
+    const priceMatch = price >= priceRange[0] && price <= priceRange[1];
 
-    // 🟡 RATING FILTER
-    const matchesRating =
-      selectedRating === null ||
-      Math.floor(item.rating) === selectedRating;
+    // ✅ RATING match
+    const ratingMatch =
+      !selectedRating || Math.floor(product.rating) === selectedRating;
 
-    // ✅ Final condition
-    return matchesCategory && matchesPrice && matchesRating;
+    // Debug output:
+    console.log(`[DEBUG] ${product.name} => cat:${categoryMatch}, price:${priceMatch}, rating:${ratingMatch}`);
+
+    return categoryMatch && priceMatch && ratingMatch;
   });
 }

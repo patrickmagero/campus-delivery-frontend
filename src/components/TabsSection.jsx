@@ -27,24 +27,68 @@ export default function TabsSection({ product }) {
 
       {/* Tab Content */}
       <div className="text-gray-700 leading-relaxed">
+        {/* DESCRIPTION TAB */}
         {activeTab === "description" && (
           <div>{product.long_description || "No description provided."}</div>
         )}
 
+        {/* ADDITIONAL INFO TAB */}
         {activeTab === "info" && (
-          <div>
+          <div className="space-y-4">
             <ul className="list-disc pl-6 space-y-1">
-              <li>Brand: Apple</li>
-              <li>Warranty: 1 Year</li>
-              <li>Condition: New</li>
+              <li><strong>Category:</strong> {product.category || "N/A"}</li>
+              <li><strong>Seller:</strong> {product.seller_name || "N/A"}</li>
+              <li><strong>Seller Rating:</strong> {product.seller_rating || "N/A"} ★</li>
+              <li><strong>Followers:</strong> {product.follower_count ?? "N/A"}</li>
+              <li><strong>Verified Seller:</strong> {product.is_verified ? "Yes" : "No"}</li>
             </ul>
+
+            {/* Variants */}
+            {product.variants && product.variants.length > 0 && (
+              <div>
+                <h4 className="font-semibold mt-4 mb-2">Variants:</h4>
+                <table className="text-sm w-full border rounded overflow-hidden">
+                  <thead className="bg-gray-100">
+                    <tr>
+                      <th className="px-3 py-2 border">Color</th>
+                      <th className="px-3 py-2 border">Size</th>
+                      <th className="px-3 py-2 border">Stock</th>
+                    </tr>
+                  </thead>
+                  <tbody>
+                    {product.variants.map((v, i) => (
+                      <tr key={i}>
+                        <td className="px-3 py-1 border">{v.color || "-"}</td>
+                        <td className="px-3 py-1 border">{v.size || "-"}</td>
+                        <td className="px-3 py-1 border">{v.stock ?? "N/A"}</td>
+                      </tr>
+                    ))}
+                  </tbody>
+                </table>
+              </div>
+            )}
+
+            {/* Tags */}
+            {product.tags && product.tags.length > 0 && (
+              <div className="mt-4">
+                <h4 className="font-semibold mb-1">Tags:</h4>
+                <div className="flex flex-wrap gap-2">
+                  {product.tags.map((tag, i) => (
+                    <span key={i} className="px-2 py-1 bg-gray-100 text-sm rounded">
+                      {tag}
+                    </span>
+                  ))}
+                </div>
+              </div>
+            )}
           </div>
         )}
 
+        {/* REVIEWS TAB */}
         {activeTab === "reviews" && (
           <div>
             <p className="text-sm text-gray-500 mb-4">
-              {product.review_count || 0} reviews
+              {product.review_count || 0} review{product.review_count === 1 ? "" : "s"}
             </p>
 
             {product.reviews && product.reviews.length > 0 ? (

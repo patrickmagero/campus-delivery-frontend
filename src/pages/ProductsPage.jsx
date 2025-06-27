@@ -5,7 +5,7 @@ import FilterSidebar from "../components/FilterSidebar";
 import ProductCard from "../components/ProductCard";
 import LoadingSkeleton from "../components/LoadingSkeleton";
 import EmptyProductGrid from "../components/EmptyProductGrid";
-import { filterItems } from "../utils/filterItems"; // ✅ shared filtering logic
+import { filterItems } from "../utils/filterItems";
 
 export default function ProductsPage() {
   const [products, setProducts] = useState([]);
@@ -13,7 +13,7 @@ export default function ProductsPage() {
 
   // Filters
   const [selectedFilters, setSelectedFilters] = useState({
-    category: ["Smartphones"],
+    category: [], // Start with no filters applied
   });
   const [priceRange, setPriceRange] = useState([500, 10000]);
   const [selectedRating, setSelectedRating] = useState(null);
@@ -24,13 +24,16 @@ export default function ProductsPage() {
     axios
       .get("http://localhost:5000/api/products")
       .then((res) => {
-        console.log("Products from backend:", res.data);
-        console.log("Example product:", res.data[0]); // 👀
         const data = Array.isArray(res.data)
           ? res.data
           : Array.isArray(res.data.products)
           ? res.data.products
           : [];
+
+        console.log("Products from backend:", data);
+        if (data.length > 0) {
+          console.log("Example product:", data[0]);
+        }
 
         setProducts(data);
       })
@@ -40,11 +43,22 @@ export default function ProductsPage() {
       })
       .finally(() => setLoading(false));
   }, []);
+
   console.log("Raw products:", products);
-  const filteredProducts = products;
+
+ const filteredProducts = filterItems(
+  products,
+  selectedFilters,
+  priceRange,
+  selectedRating
+ );
+ const sortedProducts = filteredProducts.slice().sort((a, b) =>
+  a.name.localeCompare(b.name) // Alphabetical order
+ );
+
+
+
   console.log("Filtered products:", filteredProducts);
-
-
 
   return (
     <div className="flex px-6 py-4 gap-4">
