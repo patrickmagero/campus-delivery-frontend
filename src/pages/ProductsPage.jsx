@@ -6,20 +6,23 @@ import ProductCard from "../components/ProductCard";
 import LoadingSkeleton from "../components/LoadingSkeleton";
 import EmptyProductGrid from "../components/EmptyProductGrid";
 import { filterItems } from "../utils/filterItems";
+import ErrorPage from "./ErrorPage"; // <-- Adjust the path as necessary
 
 export default function ProductsPage() {
   const [products, setProducts] = useState([]);
   const [loading, setLoading] = useState(true);
+  const [hasError, setHasError] = useState(false);
 
   // Filters
   const [selectedFilters, setSelectedFilters] = useState({
-    category: [], // Start with no filters applied
+    category: [],
   });
   const [priceRange, setPriceRange] = useState([500, 10000]);
   const [selectedRating, setSelectedRating] = useState(null);
 
   useEffect(() => {
     setLoading(true);
+    setHasError(false); // Reset error state on refresh
 
     axios
       .get("http://localhost:5000/api/products")
@@ -30,35 +33,29 @@ export default function ProductsPage() {
           ? res.data.products
           : [];
 
-        console.log("Products from backend:", data);
-        if (data.length > 0) {
-          console.log("Example product:", data[0]);
-        }
-
         setProducts(data);
       })
       .catch((err) => {
         console.error("Error fetching products:", err);
+        setHasError(true);
         setProducts([]);
       })
       .finally(() => setLoading(false));
   }, []);
 
-  console.log("Raw products:", products);
+  const filteredProducts = filterItems(
+    products,
+    selectedFilters,
+    priceRange,
+    selectedRating
+  );
+  const sortedProducts = filteredProducts.slice().sort((a, b) =>
+    a.name.localeCompare(b.name)
+  );
 
- const filteredProducts = filterItems(
-  products,
-  selectedFilters,
-  priceRange,
-  selectedRating
- );
- const sortedProducts = filteredProducts.slice().sort((a, b) =>
-  a.name.localeCompare(b.name) // Alphabetical order
- );
-
-
-
-  console.log("Filtered products:", filteredProducts);
+  if (hasError) {
+    return <ErrorPage message="Unable to fetch products. Please try again later." />;
+  }
 
   return (
     <div className="flex px-6 py-4 gap-4">

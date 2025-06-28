@@ -5,11 +5,13 @@ import FilterSidebar from "../components/FilterSidebar";
 import ServiceCard from "../components/ServiceCard";
 import LoadingSkeleton from "../components/LoadingSkeleton";
 import EmptyProductGrid from "../components/EmptyProductGrid";
-import { filterItems } from "../utils/filterItems"; // shared filtering logic
+import { filterItems } from "../utils/filterItems";
+import ErrorPage from "./ErrorPage";
 
 export default function ServicesPage() {
   const [services, setServices] = useState([]);
   const [loading, setLoading] = useState(true);
+  const [hasError, setHasError] = useState(false);
 
   // Filters
   const [selectedFilters, setSelectedFilters] = useState({});
@@ -18,6 +20,8 @@ export default function ServicesPage() {
 
   useEffect(() => {
     setLoading(true);
+    setHasError(false); // Reset error state
+
     axios
       .get("/api/services")
       .then((res) => {
@@ -30,6 +34,7 @@ export default function ServicesPage() {
       })
       .catch((err) => {
         console.error("Error fetching services:", err);
+        setHasError(true);
         setServices([]);
       })
       .finally(() => setLoading(false));
@@ -41,6 +46,10 @@ export default function ServicesPage() {
     priceRange,
     selectedRating
   );
+
+  if (hasError) {
+    return <ErrorPage message="Unable to fetch services. Please try again later." />;
+  }
 
   return (
     <div className="flex px-6 py-4 gap-4">

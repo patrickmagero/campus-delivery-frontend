@@ -1,4 +1,4 @@
-import { useContext, useState } from "react";
+import { useContext, useState, useEffect } from "react";
 import { CartContext } from "../context/CartContext";
 
 export default function PaymentPage() {
@@ -6,9 +6,42 @@ export default function PaymentPage() {
   const [selectedMethod, setSelectedMethod] = useState("mpesa");
   const [phone, setPhone] = useState("");
 
-  const subtotal = cartItems.reduce((acc, item) => acc + item.price * item.quantity, 0);
-  const shipping = 100;
-  const discount = 29;
+  // Simulated buyer address from sign-up (replace with real user context)
+  const buyerAddress = "Nairobi, CBD";
+
+  // Simulate distance-based shipping
+  const calculateShipping = (sellerLocation, buyerLocation) => {
+    // Very simplified: real-world would involve coordinates and maps
+    if (sellerLocation === buyerLocation) return 50;
+    return 150;
+  };
+
+  // Simulate seller-specific discount (from cart item)
+  const getSellerDiscount = (sellerId) => {
+    const discountMap = {
+      1: 30, // Seller 1 gives Ksh 30 off
+      2: 50, // Seller 2 gives Ksh 50 off
+      3: 20, // Seller 3 gives Ksh 20 off
+    };
+    return discountMap[sellerId] || 0;
+  };
+
+  const subtotal = cartItems.reduce(
+    (acc, item) => acc + item.price * item.quantity,
+    0
+  );
+
+  const shipping = cartItems.reduce(
+    (total, item) =>
+      total + calculateShipping(item.seller_location || "Nairobi", buyerAddress),
+    0
+  );
+
+  const discount = cartItems.reduce(
+    (total, item) => total + getSellerDiscount(item.seller_id),
+    0
+  );
+
   const total = subtotal + shipping - discount;
 
   const handleCheckout = () => {
@@ -17,11 +50,12 @@ export default function PaymentPage() {
 
   return (
     <div className="max-w-6xl mx-auto px-4 py-8 grid grid-cols-1 lg:grid-cols-3 gap-6">
-      
       {/* LEFT: Payment Methods */}
       <div className="lg:col-span-2 space-y-4">
         <h2 className="text-2xl font-bold mb-4">Payment Method</h2>
-        <p className="text-sm text-gray-500 mb-6">Trusted Payment, 100% Money Back Guarantee</p>
+        <p className="text-sm text-gray-500 mb-6">
+          Trusted Payment, 100% Money Back Guarantee
+        </p>
 
         {/* Wallet (disabled) */}
         <label className="flex items-center gap-4 p-4 border rounded-lg bg-gray-100 text-gray-400 cursor-not-allowed">
@@ -56,7 +90,7 @@ export default function PaymentPage() {
           </div>
         )}
 
-        {/* Airtel, Equity... (disabled) */}
+        {/* Other methods disabled */}
         <label className="flex items-center gap-4 p-4 border rounded-lg bg-gray-100 text-gray-400 cursor-not-allowed">
           <input type="radio" disabled />
           <span>Airtel, Equity, Vooma & More</span>
@@ -88,7 +122,7 @@ export default function PaymentPage() {
             <span>Ksh {shipping}</span>
           </div>
           <div className="flex justify-between text-green-600">
-            <span>Coupon Discount</span>
+            <span>Seller Discount</span>
             <span>-Ksh {discount}</span>
           </div>
           <hr />

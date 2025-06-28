@@ -1,6 +1,6 @@
-import { useContext, useState } from "react";
-import { CartContext } from "../context/CartContext";
+import { useContext, useState, useEffect } from "react";
 import { useNavigate } from "react-router-dom";
+import { CartContext } from "../context/CartContext";
 
 export default function BillingPage() {
   const { cartItems } = useContext(CartContext);
@@ -8,6 +8,15 @@ export default function BillingPage() {
 
   const [deliveryMethod, setDeliveryMethod] = useState("delivery");
   const [deliveryNote, setDeliveryNote] = useState("");
+  const [address, setAddress] = useState("Nairobi, CBD");
+  const [editing, setEditing] = useState(false);
+
+  useEffect(() => {
+    const user = JSON.parse(localStorage.getItem("user"));
+    if (user?.address) {
+      setAddress(user.address);
+    }
+  }, []);
 
   const subtotal = cartItems.reduce((acc, item) => acc + item.price * item.quantity, 0);
   const shipping = 100;
@@ -16,9 +25,9 @@ export default function BillingPage() {
 
   return (
     <div className="max-w-6xl mx-auto px-4 py-8 grid grid-cols-1 lg:grid-cols-3 gap-6">
-      
       {/* LEFT COLUMN */}
       <div className="lg:col-span-2 space-y-6">
+
         {/* Tabs */}
         <div className="flex gap-4">
           <button
@@ -46,10 +55,45 @@ export default function BillingPage() {
         {/* Delivery Address */}
         <section className="border rounded-lg overflow-hidden">
           <div className="bg-yellow-400 px-4 py-2 font-semibold">Delivery Address</div>
-          <div className="p-4 flex justify-between items-center">
-            <p>Nairobi, CBD</p>
-            <button className="text-blue-600 text-sm">Change Address</button>
-          </div>
+          {!editing ? (
+            <div className="p-4 flex justify-between items-center">
+              <p>{address}</p>
+              <button
+                onClick={() => setEditing(true)}
+                className="text-blue-600 text-sm"
+              >
+                Change Address
+              </button>
+            </div>
+          ) : (
+            <div className="p-4 space-y-2">
+              <input
+                type="text"
+                value={address}
+                onChange={(e) => setAddress(e.target.value)}
+                className="w-full border rounded px-3 py-2"
+              />
+              <div className="flex justify-end gap-4">
+                <button
+                  onClick={() => setEditing(false)}
+                  className="text-gray-500"
+                >
+                  Cancel
+                </button>
+                <button
+                  onClick={() => {
+                    setEditing(false);
+                    const user = JSON.parse(localStorage.getItem("user")) || {};
+                    const updatedUser = { ...user, address };
+                    localStorage.setItem("user", JSON.stringify(updatedUser));
+                  }}
+                  className="text-blue-600 font-semibold"
+                >
+                  Save
+                </button>
+              </div>
+            </div>
+          )}
         </section>
 
         {/* Schedule a delivery */}
@@ -110,7 +154,14 @@ export default function BillingPage() {
           </div>
         </div>
         <button
-          onClick={() => navigate("/cart/billing/payment")}
+          onClick={() =>
+            navigate("/cart/billing/payment", {
+              state: {
+                address,
+                deliveryNote,
+              },
+            })
+          }
           className="w-full mt-6 bg-indigo-600 text-white py-2 rounded-lg hover:bg-indigo-700"
         >
           Proceed to Payment

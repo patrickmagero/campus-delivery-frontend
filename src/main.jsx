@@ -13,6 +13,12 @@ import CartPage from './pages/CartPage.jsx';
 import BillingPage from './pages/BillingPage.jsx';
 import PaymentPage from './pages/PaymentPage.jsx';
 import OrderCompletePage from './pages/OrderCompletePage.jsx';
+import AuthPages from './pages/AuthPages.jsx';
+import { ForgotPasswordPage } from './pages/ForgotPasswordPage.jsx';
+import { ResetPasswordPage } from './pages/ResetPasswordPage.jsx';
+import NotFoundPage from './pages/NotFoundPage.jsx';
+import ServiceDetailsPage from "./pages/ServiceDetailsPage";
+import ServiceBookingPage from './pages/ServiceBookingPage.jsx';
 
 import MainLayout from './layouts/MainLayout.jsx';
 import { CartProvider } from './context/CartContext.jsx';
@@ -32,6 +38,15 @@ ReactDOM.createRoot(document.getElementById('root')).render(
             <Route path="/about" element={<AboutPage />} />
             <Route path="/faq" element={<FaqPage />} />
             <Route path="/delivery" element={<DeliveryProgress />} />
+            <Route path="/auth" element={<AuthPages />} />
+            <Route path="/forgot-password" element={<ForgotPasswordPage />} />
+            <Route path="/reset-password" element={<ResetPasswordPage />} />
+            <Route path="*" element={<NotFoundPage />} />
+            <Route path="/services/:id" element={<ServiceDetailsPage />} />
+            <Route path="/services/:id/book" element={<ServiceBookingPage />} />
+
+
+
 
             {/* 🛒 Cart Flow Routes */}
             <Route path="/cart" element={<CartPage />} />
